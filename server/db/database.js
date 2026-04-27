@@ -4,12 +4,12 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DB_PATH = path.join(__dirname, '..', 'data', 'reports.db');
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'data', 'reports.db');
 
 let db;
 
 export function initDatabase() {
-  const dataDir = path.join(__dirname, '..', 'data');
+  const dataDir = path.dirname(DB_PATH);
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
