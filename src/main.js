@@ -2,28 +2,32 @@
  * Main Application Entry Point
  */
 import './style.css';
-import { getLatestReport, getReports, getReportByWeekId, generateReport } from './api.js';
+import { getLatestReport, getReports, getReportByWeekId, generateReport, getMonthlyStats } from './api.js';
 import { renderHeader, bindHeaderEvents } from './components/header.js';
 import { renderOverviewCards } from './components/overviewCards.js';
 import { renderPlatformPanels } from './components/platformPanel.js';
 import { renderCharts, initCharts } from './components/charts.js';
 import { renderVideoTable, bindVideoTableEvents } from './components/videoTable.js';
 import { renderReportHistory, bindReportHistoryEvents } from './components/reportHistory.js';
+import { renderMonthlyStats, initMonthlyChart } from './components/monthlyStats.js';
 
 let currentReport = null;
 let allReports = [];
+let monthlyData = null;
 
 const app = document.getElementById('app');
 
 async function init() {
   showLoading();
   try {
-    const [latestReport, reportsData] = await Promise.all([
+    const [latestReport, reportsData, monthlyResult] = await Promise.all([
       getLatestReport().catch(() => null),
       getReports(12).catch(() => ({ reports: [] })),
+      getMonthlyStats().catch(() => ({ months: [] })),
     ]);
     currentReport = latestReport;
     allReports = reportsData.reports || [];
+    monthlyData = monthlyResult;
 
     if (!currentReport && allReports.length > 0) {
       currentReport = allReports[0];
@@ -42,6 +46,7 @@ function renderDashboard() {
   app.innerHTML = `
     ${renderHeader(currentReport, handleRefresh, handleFetchNow, handleExportPDF)}
     ${renderOverviewCards(currentReport)}
+    ${renderMonthlyStats(monthlyData)}
     ${renderVideoTable(currentReport)}
     ${renderPlatformPanels(currentReport)}
     ${renderCharts()}
@@ -54,18 +59,23 @@ function renderDashboard() {
   bindReportHistoryEvents(handleSelectReport);
 
   // Initialize charts (needs DOM canvas elements)
-  requestAnimationFrame(() => initCharts(currentReport));
+  requestAnimationFrame(() => {
+    initCharts(currentReport);
+    initMonthlyChart(monthlyData);
+  });
 }
 
 async function handleRefresh() {
   showLoading();
   try {
-    const [latestReport, reportsData] = await Promise.all([
+    const [latestReport, reportsData, monthlyResult] = await Promise.all([
       getLatestReport().catch(() => null),
       getReports(12).catch(() => ({ reports: [] })),
+      getMonthlyStats().catch(() => ({ months: [] })),
     ]);
     currentReport = latestReport;
     allReports = reportsData.reports || [];
+    monthlyData = monthlyResult;
     renderDashboard();
   } catch (err) {
     console.error('Refresh error:', err);

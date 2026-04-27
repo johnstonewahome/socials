@@ -723,11 +723,165 @@ h4 { font-size: 0.95rem; }
   box-shadow: 0 4px 20px rgba(5, 150, 105, 0.4);
 }
 
+/* --- Monthly Stats Section --- */
+.monthly-section {
+  margin-bottom: var(--space-2xl);
+}
+
+.monthly-section h2 {
+  margin-bottom: var(--space-lg);
+  color: var(--text-accent);
+}
+
+.monthly-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.monthly-summary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.monthly-summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(135deg, var(--accent-purple), var(--tiktok-primary));
+}
+
+.monthly-summary-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.monthly-current {
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.monthly-current-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.monthly-current-views {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.monthly-current-sublabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  margin-bottom: var(--space-xs);
+}
+
+.monthly-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.monthly-platform-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 6px var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.monthly-platform-row:hover {
+  background: var(--bg-glass);
+}
+
+.monthly-platform-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.monthly-platform-name {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.monthly-platform-value {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.monthly-divider {
+  height: 1px;
+  background: var(--bg-glass-border);
+  margin: var(--space-xs) 0;
+}
+
+.monthly-weeks-note {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-xs);
+  font-style: italic;
+}
+
+.monthly-chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  backdrop-filter: blur(16px);
+}
+
+.monthly-chart-card h3 {
+  margin-bottom: var(--space-lg);
+  color: var(--text-accent);
+}
+
+.monthly-history-table {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-glass-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+}
+
 /* --- Responsive --- */
 @media (max-width: 1200px) {
   .platforms-grid { grid-template-columns: 1fr 1fr; }
   .overview-grid { grid-template-columns: repeat(2, 1fr); }
   .charts-section { grid-template-columns: 1fr; }
+  .monthly-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -735,6 +889,9 @@ h4 { font-size: 0.95rem; }
   .dashboard-header { flex-direction: column; align-items: flex-start; }
   .platforms-grid { grid-template-columns: 1fr; }
   .overview-grid { grid-template-columns: 1fr 1fr; }
+  .monthly-grid { grid-template-columns: 1fr; }
+  .monthly-current-views { font-size: 1.8rem; }
+  .monthly-history-table { overflow-x: auto; }
   h1 { font-size: 1.5rem; }
   .kpi-value { font-size: 1.5rem; }
 }
